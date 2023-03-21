@@ -1,4 +1,9 @@
-class Mago:
+#Simulamos la interfaz
+class IMago:
+    def lanzar_hechizo(self, hechizo):
+        pass
+
+class Mago(IMago):
     def __init__(self, nombre, hechizos):
         self.nombre = nombre
         self.__hechizos = hechizos  # el atributo hechizos está encapsulado con "__"
@@ -22,14 +27,12 @@ harry_potter = Mago("Harry Potter", ["Expelliarmus", "Expecto Patronum", "Wingar
 # Intentar acceder al atributo encapsulado directamente
 #print(harry_potter.__hechizos)  # Esto generaría un error
 
-# Obtener los hechizos del mago usando el método get_hechizos
+# Obtener los hechizos del mago usando el método get_hechizos, en lugar de acceder al atributo privado
 print(harry_potter.get_hechizos())
 
-# Intentar actualizar los hechizos del mago directamente
-harry_potter.__hechizos = ["Avada Kedavra"]  # Esto no actualizaría realmente los hechizos del mago
-
-# Actualizar los hechizos del mago usando el método set_hechizos
-harry_potter.set_hechizos(["Expelliarmus", "Expecto Patronum", "Wingardium Leviosa", "Alohomora"])
-
-# Lanzar un hechizo
-harry_potter.lanzar_hechizo("Wingardium Leviosa")
+# Lanzar un hechizo usando la interfaz IMago
+hechizo = "Expelliarmus"
+if isinstance(harry_potter, IMago):
+    harry_potter.lanzar_hechizo(hechizo)
+else:
+    print("El objeto no implementa la interfaz IMago.")
