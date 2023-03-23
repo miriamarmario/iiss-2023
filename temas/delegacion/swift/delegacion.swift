@@ -1,4 +1,4 @@
-// Definir el protocolo de delegado
+// Definir el protocolo 
 protocol MagoOscuroDelegado: class {
     func magiaOscura()
 }
