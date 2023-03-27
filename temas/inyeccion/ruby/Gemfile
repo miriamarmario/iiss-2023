@@ -1,0 +1,5 @@
+source 'https://rubygems.org'
+gem 'libui'
+gem 'rubocop', group: 'development'
+gem 'glimmer-dsl-libui'
+gem 'glimmer'
