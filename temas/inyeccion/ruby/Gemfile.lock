@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.14.2)
+    tk (0.4.0)
+    win32-sound (0.6.2)
+      ffi
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  ffi
+  tk
+  win32-sound
+
+BUNDLED WITH
+   2.4.10
