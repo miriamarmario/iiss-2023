@@ -1,38 +1,29 @@
-# Definimos la clase Personaje
-class Personaje:
-    def __init__(self, nombre, casa):
-        self.nombre = nombre
-        self.casa = casa
+from typing import Optional
 
-# Definimos los personajes principales
-harry = Personaje("Harry Potter", "Gryffindor")
-ron = Personaje("Ron Weasley", "Gryffindor")
-hermione = Personaje("Hermione Granger", "Gryffindor")
-dumbledore = Personaje("Albus Dumbledore", "Gryffindor")
-malfoy = Personaje("Draco Malfoy", "Slytherin")
-riddle = Personaje("Tom Riddle", "Slytherin")
-hagrid = Personaje("Rubeus Hagrid", "Gryffindor")
+def procesar_stream_magia(stream_magia) -> None:
+    for lectura in stream_magia:
+        hechizo: Optional[str] = obtener_hechizo(lectura)
+        if hechizo is None:
+            # No hay hechizo válido en este momento
+            print("No hay hechizo disponible.")
+        else:
+            # Procesar el hechizo válido
+            lanzar_hechizo(hechizo)
 
-# Definimos la lista de personajes
-personajes = [harry, ron, hermione, dumbledore, malfoy, riddle, hagrid]
-
-# Definimos la función para encontrar los personajes de una determinada casa
-def encontrar_personajes_por_nombre(personajes, nombre):
-    for personaje in personajes:
-        if personaje.nombre == nombre:
-            return personaje
-    return None # Si no se encuentra el personaje, se devuelve None
-
-#Definimos una funcion para imprimir los personajes incluso cuando son None
-def imprimir_personaje(personaje):
-    if personaje is None:
-        print("No se encontró el personaje")
+def obtener_hechizo(lectura) -> Optional[str]:
+    
+    if lectura == "Lumos":
+        return "Lumos"
+    elif lectura == "Accio":
+        return "Accio"
+    elif lectura == "Expelliarmus":
+        return "Expelliarmus"
     else:
-        print(personaje.nombre, personaje.casa)
+        return None
 
-# Buscamos los personajes
-harry_potter = encontrar_personajes_por_nombre(personajes, "Harry Potter")
-imprimir_personaje(harry_potter)
-# Un caso que no existe
-voldemort = encontrar_personajes_por_nombre(personajes, "Voldemort")
-imprimir_personaje(voldemort)
+def lanzar_hechizo(hechizo: str) -> None:
+    print(f"Lanzando hechizo: {hechizo}")
+
+
+stream_magia = ["Lumos", "Accio", "Wingardium Leviosa", "Expelliarmus"]
+procesar_stream_magia(stream_magia)

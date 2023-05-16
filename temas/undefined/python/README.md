@@ -16,11 +16,10 @@ Finalmente, se obtiene el valor de la propiedad casa de Harry. Si este atributo 
 
 ## Ejemplo 2
 
-En primer lugar, se define la clase `Personaje` que tiene dos atributos: `nombre` y `casa`. Luego se crean varios objetos de tipo `Personaje`. Luego se define la función `encontrar_personajes_por_nombre` que recibe una lista de personajes y un nombre, y busca un personaje específico en la lista. Si encuentra un personaje con el nombre proporcionado, lo devuelve; de lo contrario, devuelve ``None``. Además, se define la función `imprimir_personaje` que recibe un personaje y lo imprime. Si el personaje es ``None``, es decir, no se encontró ningún personaje, se imprime el mensaje `No se encontró el personaje`. De lo contrario, se imprime el nombre y la casa del personaje.
+En el ejemplo, se tiene una función `obtener_hechizo` que recibe una lectura y devuelve el nombre del hechizo correspondiente si la lectura es válida. En caso contrario, si la lectura no coincide con ningún hechizo conocido, se devuelve `None` para indicar que no hay un hechizo válido en ese momento.
 
-En el código de ejemplo, se utilizan estas funciones para buscar y mostrar información sobre dos personajes: `Harry Potter` y `Voldemort`. Primero se busca a `Harry Potter` en la lista de personajes. En este caso, se encontrará a `Harry Potter` y se imprimirá su nombre y casa.
+En la función `procesar_stream_magia`, se recorre un stream de magia representado por la variable `stream_magia`. En cada iteración, se llama a `obtener_hechizo` para obtener el nombre del hechizo correspondiente a la lectura actual. Si el valor retornado es None, se imprime el mensaje "No hay hechizo disponible" para indicar que no se encontró un hechizo válido. En caso contrario, se llama a la función `lanzar_hechizo` para procesar el hechizo válido.
 
-Sin embargo, cuando se busca a `Voldemort`, no se encuentra ningún personaje con ese nombre en la lista, por lo que la función `encontrar_personajes_por_nombre` devuelve ``None``. Luego, la función `imprimir_personaje` maneja el valor ``None`` y muestra el mensaje `No se encontró el personaje`.
 
 ## Ejemplo 3
 En este ejemplo, la función `obtener_casa` devuelve un `Optional[str]`, lo que significa que puede devolver un valor de tipo cadena (`str`) o ``None``. En el diccionario `casas`, se asignan las casas correspondientes a los nombres de algunos personajes de Harry Potter.
