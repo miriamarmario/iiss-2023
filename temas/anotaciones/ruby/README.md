@@ -1,19 +1,12 @@
 # Anotaciones en Ruby
 
-Las anotaciones en Ruby son una forma de agregar metadatos a los elementos de código, como clases, métodos y variables, para describir su comportamiento y su tipo. Aunque no son necesarias para que el código funcione, pueden mejorar la legibilidad y la claridad del mismo.
+El código proporcionado implementa un módulo llamado `Anuncio` en Ruby que agrega un mecanismo similar a las anotaciones en Ruby. A través de la inclusión del módulo `Anuncio` en una clase y el uso del método `anunciar_metodo`, se puede imprimir un anuncio antes de la ejecución de los métodos seleccionados.
 
-En el ejemplo se puede ver cómo utilizar anotaciones en Ruby para agregar funcionalidades adicionales a un método:
+El módulo `Anuncio` define un método de clase llamado `anunciar_metodo` que recibe como argumentos una serie de símbolos que representan los nombres de los métodos que se desean anunciar. Dentro de este método, se realiza un bucle para cada método especificado. Se obtiene el método original utilizando `instance_method(metodo)` y se define un nuevo método utilizando `define_method`. Este nuevo método es el que se ejecutará en lugar del método original y contendrá la lógica del anuncio.
 
-Se define el módulo `Anuncio` que se incluye en la clase `AtrapadorDeCriaturas`. Dentro del módulo, se define el método de clase `anunciar_metodo`, que toma una lista variable de símbolos que representan los nombres de los métodos a los que se les agregará la funcionalidad adicional.
+En el nuevo método definido, se imprime un mensaje de anuncio que indica el nombre del método y los parámetros que se están utilizando. A continuación, se busca la ubicación del archivo de origen y la línea de inicio del método original utilizando `original_method.source_location`. Si se encuentra la información del archivo y la línea, se lee el archivo línea por línea y se imprimen solo las líneas de código correspondientes al método, evitando las líneas en blanco y deteniéndose cuando se encuentra la palabra clave "end". Finalmente, se llama al método original utilizando `original_method.bind(self).call(*args, &block)` para ejecutar la lógica original del método.
 
-Dentro de `anunciar_metodo`, se define una nueva implementación para cada uno de los métodos especificados. La nueva implementación agrega tres funcionalidades:
+En la clase `AtrapadorDeCriaturas`, se incluye el módulo `Anuncio` utilizando `include Anuncio`, lo que significa que los métodos de esta clase se verán afectados por el mecanismo de anuncios. Además, se utiliza el método `anunciar_metodo` para anunciar los métodos `lanzar_red` y `usar_varita`.
 
-1. Imprime un anuncio indicando que se va a ejecutar el método, junto con los parámetros que recibió.
-2. Imprime el código fuente de la implementación del método.
-3. Llama al método original con los mismos parámetros.
+En el ejemplo de uso al final del código, se crea una instancia de `AtrapadorDeCriaturas` llamada `atrapador` y se llaman a los métodos `lanzar_red` y `usar_varita`. Al ejecutarse, se imprimirán los anuncios correspondientes a cada método antes de que se ejecute la lógica original del método.
 
-Para agregar esta funcionalidad, se utiliza el método `define_method` para definir una nueva implementación para cada uno de los métodos especificados en la lista variable de símbolos.
-
-La anotación `self.included(base)` se utiliza para extender la clase que incluye el módulo `Anuncio` con el módulo `ClassMethods`, lo que permite llamar al método de clase `anunciar_metodo` en la clase.
-
-Finalmente, se crea una instancia de `AtrapadorDeCriaturas` y se llaman a los métodos `lanzar_red` y `usar_varita`. Como resultado, se imprimirán los anuncios y el código fuente de la implementación del método, junto con la ejecución del método original.
