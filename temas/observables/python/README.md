@@ -1,12 +1,11 @@
 # Observables en Python 
 
-Los observables son un patrón de diseño muy útil en programación para notificar a los objetos interesados sobre los cambios en un objeto observado. En Python, podemos implementar el patrón Observable creando una clase que tenga una lista de observadores, que son objetos que se registran para ser notificados de los cambios. 
+El código muestra un ejemplo de cómo utilizar los observables en Python utilizando la biblioteca RxPY.
 
-En este ejemplo, la clase `Observable` tiene una lista de observadores y tres métodos: `agregar_observador`, `eliminar_observador` y `notificar_observadores`. El método `agregar_observador` añade un observador a la lista de observadores, `eliminar_observador` elimina un observador de la lista y `notificar_observadores` itera sobre la lista de observadores y llama al método `actualizar` de cada observador, pasando un evento como argumento.
+En este ejemplo, la clase `Mago` tiene un atributo llamado `hechizos`, que es un observable. La función `editor_de_hechizos` se utiliza para crear el observable y definir su comportamiento. En este caso, el observable emite una secuencia de hechizos predefinidos.
 
-La clase `Mago` hereda de la clase `Observable` y tiene un método adicional llamado `set_puntuacion` que establece la puntuación del mago y llama al método `notificar_observadores` con un evento que indica que la puntuación ha cambiado.
+Dentro de la función `editor_de_hechizos`, se utiliza el parámetro `observador` para notificar a los suscriptores cada vez que ocurre un evento. En este caso, se utiliza el método `on_next` para emitir cada hechizo de la lista `hechizos` y `on_completed` para indicar que no habrá más eventos.
 
-Las clases `CasaMago` y `MinisterioMagia` heredan de la clase `Observador` y sobrescriben el método `actualizar`. La clase `CasaMago` imprime un mensaje cuando se actualiza la puntuación de un mago y la clase `MinisterioMagia` mantiene la puntuación total de todos los magos y la imprime cuando se actualiza la puntuación de un mago.
+La función `aprender_hechizo` se encarga de suscribirse al observable `hechizos` y definir qué hacer cuando se emite un nuevo hechizo. En este caso, se imprime un mensaje indicando que el mago aprendió el hechizo.
 
-En el ejemplo se crean objetos de las clases `Mago`, `CasaMago` y `MinisterioMagia`, y se agregan y eliminan observadores para cada mago. Luego se establece la puntuación de cada mago y se observa cómo los observadores responden a los cambios en la puntuación.
-
+Finalmente, se crean instancias de la clase `Mago` para representar a diferentes magos, como Harry Potter, Hermione Granger y Ron Weasley. Cada mago llama al método `aprender_hechizo` para comenzar a aprender los hechizos.
