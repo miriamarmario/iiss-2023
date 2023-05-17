@@ -1,11 +1,28 @@
 # Observables en Python 
+Los observables en Python son una parte de la biblioteca RxPy (Reactive Extensions for Python) que permite la programación reactiva utilizando el patrón Observable.
 
-El código muestra un ejemplo de cómo utilizar los observables en Python utilizando la biblioteca RxPY.
+En el ejemplo, se utilizan diferentes mecanismos para crear y manipular observables:
 
-En este ejemplo, la clase `Mago` tiene un atributo llamado `hechizos`, que es un observable. La función `editor_de_hechizos` se utiliza para crear el observable y definir su comportamiento. En este caso, el observable emite una secuencia de hechizos predefinidos.
+## Mecanismo 'create' con Observable personalizado
+El método `create` se utiliza para crear un observable personalizado. Se define una función `obtener_hechizos` que toma un observador y un planificador como parámetros. Dentro de esta función, se itera sobre una lista de hechizos y se notifica al observador con cada hechizo utilizando el método `on_next`. Finalmente, se llama al método `on_completed` para indicar que se han completado todas las notificaciones. El observable se crea mediante `create(get_spells)`, donde `get_spells` es la función definida anteriormente.
 
-Dentro de la función `editor_de_hechizos`, se utiliza el parámetro `observador` para notificar a los suscriptores cada vez que ocurre un evento. En este caso, se utiliza el método `on_next` para emitir cada hechizo de la lista `hechizos` y `on_completed` para indicar que no habrá más eventos.
+## Mecanismo 'just'
+El método `just` se utiliza para crear un observable que emite un valor específico o una secuencia de valores especificados. En este caso, se utiliza `just(["Harry Potter", "Hermione Granger", "Ron Weasley"])` para crear un observable que emite una secuencia de personajes de Harry Potter.
 
-La función `aprender_hechizo` se encarga de suscribirse al observable `hechizos` y definir qué hacer cuando se emite un nuevo hechizo. En este caso, se imprime un mensaje indicando que el mago aprendió el hechizo.
+## Mecanismo 'interval'
+El método `interval` se utiliza para crear un observable que emite secuencialmente números enteros en intervalos regulares de tiempo. En el código, se crea un observable `interval(1)` que emite números enteros cada segundo. Luego se utiliza el operador `ops.take(6)` para limitar la emisión a solo los primeros 6 números.
 
-Finalmente, se crean instancias de la clase `Mago` para representar a diferentes magos, como Harry Potter, Hermione Granger y Ron Weasley. Cada mago llama al método `aprender_hechizo` para comenzar a aprender los hechizos.
+## Mecanismo 'range'
+El método `range` se utiliza para crear un observable que emite una secuencia de números enteros dentro de un rango especificado. En este caso, se crea el observable `magic_numbers = range(1, 11)` que emite números enteros del 1 al 10.
+
+## Operadores de transformación: 'filter', 'map', 'distinct', 'distinct_until_changed'
+Estos operadores se utilizan para manipular los datos emitidos por un observable:
+
+- El operador `ops.filter` filtra los elementos emitidos por el observable según una condición específica. En el código, se utiliza `numeros_magicos.pipe(ops.filter(lambda numero: numero % 2 == 0))` para filtrar y emitir solo los números mágicos pares.
+- El operador `ops.map` transforma cada elemento emitido por el observable aplicando una función específica. En el código, se utiliza `magos.pipe(ops.map(lambda mago: stream(mago).map(lambda c: c.upper()).to_list()))` para transformar cada mago en una lista de caracteres en mayúscula.
+- El operador `ops.distinct` emite solo los elementos distintos, eliminando duplicados. En el código, se utiliza `magos.pipe(ops.distinct())` para emitir solo una vez cada mago de la lista.
+- El operador `ops.distinct_until_changed` emite los elementos distintos consecutivos, es decir, solo emite un elemento si es diferente al elemento anterior. En el código, se utiliza `magos.pipe(ops.distinct_until_changed())` para emitir solo los magos que son diferentes al mago anterior.
+
+## Subscripción a los observables
+Una vez que se crean los observables, se realiza la suscripción a ellos mediante el método `subscribe`. Se proporcionan funciones de devolución de llamada (`on_next`, `on_completed`) que se ejecutan cuando se reciben elementos o cuando el observable se completa. Dentro de estas funciones de devolución de llamada, se realiza la manipulación o procesamiento de los datos emitidos por el observable.
+
