@@ -1,12 +1,17 @@
 # Anotaciones en Ruby
 
-El código proporcionado implementa un módulo llamado `Anuncio` en Ruby que agrega un mecanismo similar a las anotaciones en Ruby. A través de la inclusión del módulo `Anuncio` en una clase y el uso del método `anunciar_metodo`, se puede imprimir un anuncio antes de la ejecución de los métodos seleccionados.
 
-El módulo `Anuncio` define un método de clase llamado `anunciar_metodo` que recibe como argumentos una serie de símbolos que representan los nombres de los métodos que se desean anunciar. Dentro de este método, se realiza un bucle para cada método especificado. Se obtiene el método original utilizando `instance_method(metodo)` y se define un nuevo método utilizando `define_method`. Este nuevo método es el que se ejecutará en lugar del método original y contendrá la lógica del anuncio.
+La clase `Module` es el punto de partida de este ejemplo. Dentro de esta clase, se define el método `method_added`, que se ejecutará automáticamente cada vez que se defina un nuevo método en una clase que incluye este módulo. 
 
-En el nuevo método definido, se imprime un mensaje de anuncio que indica el nombre del método y los parámetros que se están utilizando. A continuación, se busca la ubicación del archivo de origen y la línea de inicio del método original utilizando `original_method.source_location`. Si se encuentra la información del archivo y la línea, se lee el archivo línea por línea y se imprimen solo las líneas de código correspondientes al método, evitando las líneas en blanco y deteniéndose cuando se encuentra la palabra clave "end". Finalmente, se llama al método original utilizando `original_method.bind(self).call(*args, &block)` para ejecutar la lógica original del método.
+Dentro de `method_added`, se realiza una verificación para asegurarse de que el método no haya sido añadido anteriormente y que no se esté ejecutando en el contexto de un método proxy. Si se cumplen estas condiciones, se crea un alias del método original agregando el prefijo "admin" al nombre del método, lo que permite conservar una referencia al método original. 
 
-En la clase `AtrapadorDeCriaturas`, se incluye el módulo `Anuncio` utilizando `include Anuncio`, lo que significa que los métodos de esta clase se verán afectados por el mecanismo de anuncios. Además, se utiliza el método `anunciar_metodo` para anunciar los métodos `lanzar_red` y `usar_varita`.
+Luego, se define un nuevo método utilizando `module_eval`, el cual reemplazará al método original. Este nuevo método verifica si el usuario actual es un administrador llamando al método `admin?`. Si el usuario es un administrador, se ejecuta el método original a través del alias creado previamente. En resumen, se está creando un mecanismo de proxy para interceptar la ejecución de los métodos y aplicar la lógica de verificación de administrador.
 
-En el ejemplo de uso al final del código, se crea una instancia de `AtrapadorDeCriaturas` llamada `atrapador` y se llaman a los métodos `lanzar_red` y `usar_varita`. Al ejecutarse, se imprimirán los anuncios correspondientes a cada método antes de que se ejecute la lógica original del método.
+Además, se proporciona el método `profesor_only` que se utiliza como anotación para marcar el punto a partir del cual los métodos definidos en la clase solo pueden ser ejecutados por profesores de Artes Oscuras. Este método establece la variable de instancia `@_profesor` como `true`, lo que indica que los métodos siguientes solo estarán disponibles para los administradores.
+
+La clase `User` tiene un atributo `admin` y se inicializa con un valor booleano que indica si el usuario es un administrador o no. También se definen los métodos `admin?`, `hechizo1` y `hechizo2`. Antes de los métodos `hechizo1` y `hechizo2`, se llama al método `profesor_only`, lo que significa que estos dos métodos solo podrán ser ejecutados por usuarios que sean profesores de Artes Oscuras, es decir, aquellos que tengan el atributo `admin` establecido como `true`.
+
+Se crea una instancia de `User` llamada `user` con el atributo `admin` establecido como `true`, lo que le otorga acceso a los métodos `hechizo1` y `hechizo2`. Al ejecutar estos métodos en `user`, se imprime el mensaje correspondiente.
+
+Después, se crea otra instancia de `User` llamada `user2` sin especificar el atributo `admin`, lo que significa que `user2` no es un profesor de Artes Oscuras y, por lo tanto, no tiene acceso a los métodos `hechizo1` y `hechizo2`. Al intentar ejecutar estos métodos en `user2`, se lanzará un error.
 
