@@ -16,12 +16,22 @@ Finalmente, se obtiene el valor de la propiedad casa de Harry. Si este atributo 
 
 ## Ejemplo 2
 
-En el ejemplo, se tiene una función `obtener_hechizo` que recibe una lectura y devuelve el nombre del hechizo correspondiente si la lectura es válida. En caso contrario, si la lectura no coincide con ningún hechizo conocido, se devuelve `None` para indicar que no hay un hechizo válido en ese momento.
+Antes de empezar, hay que instalar la extensión `pyxtension` de la siguiente forma:
+```
+pip install pyxtension
+```
 
-En la función `procesar_stream_magia`, se recorre un stream de magia representado por la variable `stream_magia`. En cada iteración, se llama a `obtener_hechizo` para obtener el nombre del hechizo correspondiente a la lectura actual. Si el valor retornado es None, se imprime el mensaje "No hay hechizo disponible" para indicar que no se encontró un hechizo válido. En caso contrario, se llama a la función `lanzar_hechizo` para procesar el hechizo válido.
+El ejemplo tiene dos clases,`Magia` y `Mago`. La clase `Magia` tiene un atributo `hechizo` que puede ser opcional, representado mediante `Optional[str]`. Esto significa que un objeto `Magia` puede o no tener un hechizo asociado. 
+
+La clase `Mago` tiene un atributo `magia` que también es opcional y está representado por `Optional[Magia]`. Esto permite que un mago pueda o no tener magia.
+
+En el método `obtener_hechizo` de la clase `Mago`, se utiliza el Optional para devolver el hechizo asociado si existe, o None si no hay magia. Esto es útil para realizar comprobaciones y decisiones basadas en la presencia o ausencia de un hechizo.
+
+El método `procesar_stream_magia` muestra cómo se puede utilizar el concepto de Optionals en el contexto de un stream de datos. Se utiliza el módulo `pyxtension.streams` para realizar operaciones en el stream de magos. En este caso, se filtran los magos que tienen un hechizo (es decir, aquellos cuyo `obtener_hechizo()` no es None) y se realiza una operación de mapeo para obtener información sobre cada mago mediante el método `imprimir_mago()`. Luego, se mapean los magos para imprimir sus detalles en mayúsculas y con signos de exclamación agregados. Finalmente, se imprime cada mago en la consola.
 
 
 ## Ejemplo 3
+
 En este ejemplo, la función `obtener_casa` devuelve un `Optional[str]`, lo que significa que puede devolver un valor de tipo cadena (`str`) o ``None``. En el diccionario `casas`, se asignan las casas correspondientes a los nombres de algunos personajes de Harry Potter.
 
 Luego, llamamos a la función `obtener_casa` para obtener la casa de un personaje específico, en este caso, `Harry`. Si la casa no es ``None``, imprimimos la casa. De lo contrario, mostramos un mensaje indicando que no se encontró la casa.
