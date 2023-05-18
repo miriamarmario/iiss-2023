@@ -1,6 +1,5 @@
-from rx import create, just, interval, range, operators as ops
-from pyxtension.streams import stream
-
+from rx import of, create, just, interval, range, operators as ops
+import sys
 # Mecanismo 'create' con Observable personalizado
 def obtener_hechizos(observador, planificador):
     hechizos = ["Expelliarmus", "Lumos", "Accio", "Avada Kedavra"]
@@ -16,6 +15,7 @@ fuente_hechizos.subscribe(
 )
 
 # Mecanismo 'just' con personajes de Harry Potter
+print("\nMecanismo 'just' con personajes de Harry Potter")
 personajes = just(["Harry Potter", "Hermione Granger", "Ron Weasley"])
 
 personajes.subscribe(
@@ -23,12 +23,19 @@ personajes.subscribe(
     on_completed=lambda: print("¡Finalizó la lista de personajes!")
 )
 
-# Mecanismo 'interval' con contador de segundos hasta 5
-interval (1).pipe(
-    ops.take(6)
-).subscribe(lambda x: print("Segundos: {0}".format(x)))
 
-# Mecanismo 'range' con lista de números mágicos
+print("\nMecanismo 'interval' con contador de segundos hasta 5")
+Fin = True
+intervalo = interval(1).pipe(
+    ops.take(5)
+)
+
+intervalo.subscribe(
+    on_next=lambda segundo: print("Segundo: {0}".format(segundo)),
+    on_completed=lambda: exit()
+)
+
+print("\nMecanismo 'range' con lista de números mágicos")
 numeros_magicos = range(1, 11)
 
 numeros_magicos.subscribe(
@@ -36,7 +43,7 @@ numeros_magicos.subscribe(
     on_completed=lambda: print("¡Finalizó la lista de números mágicos!")
 )
 
-# Mecanismo 'filter' con números mágicos
+print("\nMecanismo 'filter' con números mágicos")
 numeros_magicos.pipe(
     ops.filter(lambda numero: numero % 2 == 0)
 ).subscribe(
@@ -45,29 +52,32 @@ numeros_magicos.pipe(
 )
 
 # Mecanismo 'map' con magos
-magos = just(["Harry Potter", "Hermione Granger", "Ron Weasley"])
+print("\nMecanismo 'map' con magos")
+magos = ["Harry Potter", "Hermione Granger", "Ron Weasley"]
 
-magos.pipe(
-    ops.map(lambda mago: stream(mago).map(lambda c: c.upper()).to_list())
-).subscribe(
-    on_next=lambda mago: print("Mago: {0}".format(mago)),
-    on_completed=lambda: print("¡Finalizó la lista de magos!")
+observable = of(*magos).pipe(
+    ops.map(lambda mago: mago.upper())
 )
+
+observable.subscribe(lambda mago: print(mago))
+
 
 # Mecanismo 'distinct' con magos
-magos = just(["Harry Potter", "Hermione Granger", "Ron Weasley", "Harry Potter"])
+print("\nMecanismo 'distinct' con magos")
+magos = {"Harry Potter" , "Harry Potter", "Hermione Granger", "Ron Weasley", "Harry Potter"}
+#Este mecanismo no funciona con listas, solo con conjuntos
 
-magos.pipe(
+observable = of(magos).pipe(
     ops.distinct()
-).subscribe(
-    on_next=lambda mago: print("Mago: {0}".format(mago)),
-    on_completed=lambda: print("¡Finalizó la lista de magos!")
 )
 
-# Mecanismo 'distinct_until_changed' con magos
-magos = just(["Harry Potter", "Hermione Granger", "Ron Weasley", "Harry Potter"])
+observable.subscribe(lambda mago: print(mago))
 
-magos.pipe(
+# Mecanismo 'distinct_until_changed' con magos
+print("\nMecanismo 'distinct_until_changed' con magos")
+magos = ["Harry Potter","Harry Potter", "Hermione Granger", "Ron Weasley" ]
+
+observable = of(*magos).pipe(
     ops.distinct_until_changed()
 ).subscribe(
     on_next=lambda mago: print("Mago: {0}".format(mago)),
@@ -75,3 +85,8 @@ magos.pipe(
 )
 
 lista_de_magos = [ "Harry Potter", "Hermione Granger", "Ron Weasley", "Harry Potter" ]
+
+while(Fin):
+    entrada = input("Cuando la cuenta llegue a 4, presione ENTER y sera liberado de este bucle infinito\n")
+    #loop infinito para que no se cierre el programa
+    

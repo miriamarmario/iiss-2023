@@ -1,28 +1,149 @@
-# Observables en Python 
-Los observables en Python son una parte de la biblioteca RxPy (Reactive Extensions for Python) que permite la programación reactiva utilizando el patrón Observable.
+# Uso de Observables en Python
 
-En el ejemplo, se utilizan diferentes mecanismos para crear y manipular observables:
+Los observables son una parte fundamental de la programación reactiva y permiten trabajar con secuencias de datos asincrónicos. En Python, puedes utilizar la biblioteca RxPY para trabajar con observables y aprovechar los beneficios de la programación reactiva. A continuación, se presenta un ejemplo de uso de observables en Python utilizando diferentes mecanismos de RxPY:
 
-## Mecanismo 'create' con Observable personalizado
-El método `create` se utiliza para crear un observable personalizado. Se define una función `obtener_hechizos` que toma un observador y un planificador como parámetros. Dentro de esta función, se itera sobre una lista de hechizos y se notifica al observador con cada hechizo utilizando el método `on_next`. Finalmente, se llama al método `on_completed` para indicar que se han completado todas las notificaciones. El observable se crea mediante `create(get_spells)`, donde `get_spells` es la función definida anteriormente.
+## Mecanismo 'create' con un Observable personalizado
 
-## Mecanismo 'just'
-El método `just` se utiliza para crear un observable que emite un valor específico o una secuencia de valores especificados. En este caso, se utiliza `just(["Harry Potter", "Hermione Granger", "Ron Weasley"])` para crear un observable que emite una secuencia de personajes de Harry Potter.
+```python
+from rx import create
 
-## Mecanismo 'interval'
-El método `interval` se utiliza para crear un observable que emite secuencialmente números enteros en intervalos regulares de tiempo. En el código, se crea un observable `interval(1)` que emite números enteros cada segundo. Luego se utiliza el operador `ops.take(6)` para limitar la emisión a solo los primeros 6 números.
+def obtener_hechizos(observador, planificador):
+    hechizos = ["Expelliarmus", "Lumos", "Accio", "Avada Kedavra"]
+    for hechizo in hechizos:
+        observador.on_next(hechizo)
+    observador.on_completed()
 
-## Mecanismo 'range'
-El método `range` se utiliza para crear un observable que emite una secuencia de números enteros dentro de un rango especificado. En este caso, se crea el observable `magic_numbers = range(1, 11)` que emite números enteros del 1 al 10.
+fuente_hechizos = create(obtener_hechizos)
 
-## Operadores de transformación: 'filter', 'map', 'distinct', 'distinct_until_changed'
-Estos operadores se utilizan para manipular los datos emitidos por un observable:
+fuente_hechizos.subscribe(
+    on_next=lambda hechizo: print("Lanzando hechizo: {0}".format(hechizo)),
+    on_completed=lambda: print("¡Finalizó el lanzamiento de hechizos!")
+)
+```
 
-- El operador `ops.filter` filtra los elementos emitidos por el observable según una condición específica. En el código, se utiliza `numeros_magicos.pipe(ops.filter(lambda numero: numero % 2 == 0))` para filtrar y emitir solo los números mágicos pares.
-- El operador `ops.map` transforma cada elemento emitido por el observable aplicando una función específica. En el código, se utiliza `magos.pipe(ops.map(lambda mago: stream(mago).map(lambda c: c.upper()).to_list()))` para transformar cada mago en una lista de caracteres en mayúscula.
-- El operador `ops.distinct` emite solo los elementos distintos, eliminando duplicados. En el código, se utiliza `magos.pipe(ops.distinct())` para emitir solo una vez cada mago de la lista.
-- El operador `ops.distinct_until_changed` emite los elementos distintos consecutivos, es decir, solo emite un elemento si es diferente al elemento anterior. En el código, se utiliza `magos.pipe(ops.distinct_until_changed())` para emitir solo los magos que son diferentes al mago anterior.
+En este ejemplo, creamos un observable personalizado utilizando el mecanismo `create()`. El observador recibe una secuencia de hechizos y los emite utilizando el método `on_next()`. Al finalizar la secuencia, se llama al método `on_completed()` para indicar que se han emitido todos los elementos. Finalmente, nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. 
 
-## Subscripción a los observables
-Una vez que se crean los observables, se realiza la suscripción a ellos mediante el método `subscribe`. Se proporcionan funciones de devolución de llamada (`on_next`, `on_completed`) que se ejecutan cuando se reciben elementos o cuando el observable se completa. Dentro de estas funciones de devolución de llamada, se realiza la manipulación o procesamiento de los datos emitidos por el observable.
+## Mecanismo 'just' con personajes de Harry Potter
 
+```python
+from rx import just
+
+personajes = just(["Harry Potter", "Hermione Granger", "Ron Weasley"])
+
+personajes.subscribe(
+    on_next=lambda personaje: print("Personaje: {0}".format(personaje)),
+    on_completed=lambda: print("¡Finalizó la lista de personajes!")
+)
+```
+
+En este ejemplo, utilizamos el mecanismo `just()` para crear un observable que emite una lista de personajes de Harry Potter. Luego, nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. Cada personaje se imprimirá en la consola y se mostrará un mensaje al finalizar la emisión.
+
+## Mecanismo 'interval' con contador de segundos hasta 5
+
+```python
+from rx import interval, operators as ops
+
+interval(1).pipe(
+    ops.take(6)
+).subscribe(lambda x: print("Segundos: {0}".format(x)))
+```
+
+En este ejemplo, utilizamos el mecanismo `interval()` para crear un observable que emite un valor cada segundo. Luego, utilizamos el operador `take()` para limitar la emisión a 6 valores. Nos suscribimos al observable y proporcionamos una función lambda para manejar los eventos `on_next`. En cada evento, se imprimirá el número de segundos transcurridos.
+
+## Mecanismo 'range' con lista de números mágicos
+
+```python
+from rx import range
+
+numeros_magicos = range(1, 11)
+
+numeros_magicos.subscribe(
+    on_next=lambda numero: print("Número mágico: {0}".format(numero)),
+    on_completed=lambda: print("¡Finalizó la lista de números mágicos!")
+)
+```
+
+En este ejemplo, utilizamos el mecanismo `range()` para crear un observable que emite
+
+ una secuencia de números mágicos del 1 al 10. Nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. Cada número mágico se imprimirá en la consola y se mostrará un mensaje al finalizar la emisión.
+
+## Mecanismo 'filter' con números mágicos
+
+```python
+from rx import of, operators as ops
+
+numeros_magicos = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+numeros_magicos.pipe(
+    ops.filter(lambda numero: numero % 2 == 0)
+).subscribe(
+    on_next=lambda numero: print("Número mágico par: {0}".format(numero)),
+    on_completed=lambda: print("¡Finalizó la lista de números mágicos!")
+)
+```
+
+En este ejemplo, utilizamos el operador `filter()` para crear un observable que filtra solo los números mágicos pares. Nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. Solo se imprimirán los números mágicos pares.
+
+## Mecanismo 'map' con magos
+
+```python
+from rx import of, operators as ops
+
+magos = ["Harry Potter", "Hermione Granger", "Ron Weasley"]
+
+observable = of(*magos).pipe(
+    ops.map(lambda mago: mago.upper())
+)
+
+observable.subscribe(lambda mago: print(mago))
+```
+
+En este ejemplo, utilizamos el operador `map()` para crear un observable que transforma cada mago en letras mayúsculas. Nos suscribimos al observable y proporcionamos una función lambda para manejar los eventos `on_next`. Cada mago en mayúsculas se imprimirá en la consola.
+
+## Mecanismo 'distinct' con magos
+
+```python
+from rx import of, operators as ops
+
+magos = {"Harry Potter", "Harry Potter", "Hermione Granger", "Ron Weasley"}
+
+observable = of(*magos).pipe(
+    ops.distinct()
+)
+
+observable.subscribe(lambda mago: print(mago))
+```
+
+En este ejemplo, utilizamos el operador `distinct()` para crear un observable que emite únicamente magos únicos. Nos suscribimos al observable y proporcionamos una función lambda para manejar los eventos `on_next`. Solo se imprimirán los magos únicos.
+
+## Mecanismo 'distinct_until_changed' con magos
+
+```python
+from rx import of, operators as ops
+
+magos = ["Harry Potter", "Harry Potter", "Hermione Granger", "Ron Weasley"]
+
+observable = of(*magos).pipe(
+    ops.distinct_until_changed()
+)
+
+observable.subscribe(lambda mago: print(mago))
+```
+
+En este ejemplo, utilizamos el operador `distinct_until_changed()` para crear un observable que emite magos únicos consecutivos, omitiendo los elementos duplicados consecutivos. Nos suscribimos al observable y proporcionamos una función lambda para manejar los eventos `on_next`. Solo se imprimirán los magos únicos consecutivos.
+
+Estos ejemplos demuestran diferentes mecanismos y operadores disponibles en RxPY para trabajar con observables en Python. La programación reactiva proporciona una manera poderosa de trabajar con secuencias de datos asincrónicos y permite desarrollar aplicaciones más concisas y eficientes.
+
+# Instalación de RxPY
+
+RxPY es una biblioteca de programación reactiva que te permite trabajar con observables en Python. Sigue estos pasos para instalar RxPY en tu entorno de desarrollo:
+
+## Pasos de instalación
+Instala RxPY utilizando el administrador de paquetes `pip`. Ejecuta el siguiente comando:
+
+   ```bash
+   pip install rx
+   ```
+
+   Esto descargará e instalará RxPY y sus dependencias.
+    Se ha añadido un fichero `observable.py` con los ejemplos de la documentación implementados.
