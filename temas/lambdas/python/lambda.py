@@ -35,12 +35,14 @@ magos_filtrados = [mago for mago in magos if mago.edad >= 17 and mago.casa == "R
 for mago in magos_filtrados:
     print(f"{mago.nombre}, de {mago.edad} años, es de la casa {mago.casa}")
     
+    
 #tercer ejemplo con map y enumarate
 
 # Creamos otra lista de estudiantes de Hogwarts
-estudiantes = ['Harry Potter', 'Hermione Granger', 'Ron Weasley', 'Draco Malfoy', 'Cedric Diggory', 'Luna Lovegood', 'Neville Longbottom']
+estudiantes = ['Harry Potter', 'Hermione Granger', 'Ron Weasley',
+'Draco Malfoy', 'Cedric Diggory', 'Luna Lovegood', 'Neville Longbottom']
 
-# Utilizamos enumerate y lambda para asignar un número de identificación a cada estudiante
+# Utilizamos enumerate y map para asignar un número de identificación a cada estudiante
 estudiantes_id = list(map(lambda x: {'id': x[0], 'nombre': x[1]}, enumerate(estudiantes)))
 
 # Imprimimos los estudiantes con sus identificadores

@@ -12,12 +12,13 @@ class Module
     end
   end
 
-  def profesor_only
+  def Anotacion_profesor_ONLY     #anotacion
     @_profesor = true
   end
+
 end
 
-# Example usage
+# como se usa
 
 class User
   attr_reader :admin
@@ -30,7 +31,12 @@ class User
     @admin
   end
 
-  profesor_only # ESTO ES LO QUE ANOTA LOS METODOS QUE SE DEFINAN A PARTIR DE AQUI
+  def hechizo         #este hechizo lo puede realizar todo el mundo
+    puts "ALOHOMORA"
+  end
+
+  Anotacion_profesor_ONLY
+  # ESTO ES LO QUE ANOTA LOS METODOS QUE SE DEFINAN A PARTIR DE AQUI
   #LOS METODOS QUE SE DEFINAN A PARTIR DE AQUI SOLO PODRAN SER EJECUTADOS POR PROFESORES DE ARTES OSCURAS
 
   def hechizo1
@@ -42,12 +48,12 @@ class User
   end
 end
 
-user = User.new(true)
-
-# example of the code
+user = User.new(true) #si puede hacer los hechizos
+user.hechizo
 user.hechizo1
 user.hechizo2
 
-user2 = User.new
-user2.hechizo1
+user2 = User.new 
+user2.hechizo  #este es el unico hechizo que puede hacer, ya que está definido antes de la anotacion
+user2.hechizo1 #no puede hacer los hechizos porque no es profesor
 user2.hechizo2

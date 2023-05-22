@@ -9,6 +9,9 @@ public class ComportamientoRavenclaw implements ComportamientoEstudiante {
 
     @Override
     public void hacerAlgo(Estudiante estudiante) {
-        System.out.println(estudiante.getNombre() + " " + estudiante.getApellido() + " de la casa " + estudiante.getCasa() + " ha demostrado su inteligencia al resolver un complicado acertijo.");
+        System.out.println(estudiante.getNombre() + " " + estudiante.getApellido() +
+                " de la casa " + estudiante.getCasa() + " ha demostrado su inteligencia " +
+                "al resolver un complicado acertijo.");
     }
 }
+

@@ -2,7 +2,6 @@
 protocol MagoOscuroDelegado: class {
     func magiaOscura()
 }
-
 // Clase que realiza magia oscura
 class MagoOscuro {
     weak var delegate: MagoOscuroDelegado?
@@ -11,7 +10,6 @@ class MagoOscuro {
         delegate?.magiaOscura()
     }
 }
-
 // Clase que implementa el protocolo de delegado
 class DeathEater: MagoOscuroDelegado {
     func magiaOscura() {
