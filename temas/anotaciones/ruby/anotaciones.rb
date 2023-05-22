@@ -1,68 +1,59 @@
-class Module
-  def method_added(name)
-
-    #Imprime introduzca la contraseña
-    if @_profesor.nil?
-    puts "Introduzca la contraseña"
-    #Lee la contraseña
-    password = gets.chomp
-
-    #Si la contraseña es correcta
-    if password == "sorbete_de_limon" 
-      @_profesor = true
-    else
-      @_profesor = false
-    end
+module Anuncio
+  def self.included(base)
+    base.extend(ClassMethods)
   end
-    unless @_profesor.nil? or @_proxy_method
-      @_proxy_method = true
-      alias_method "admin#{name}", name
-      module_eval <<-STRING
-        def #{name}(*args, &block)
-          admin#{name}(*args, &block) if @_profesor
+
+module ClassMethods
+  def anunciar_metodo(*metodos)
+    metodos.each do |metodo|
+      original_method = instance_method(metodo)
+      define_method metodo do |*args, &block|
+        # Imprimir anuncio
+        puts "#{metodo} va a ejecutarse con los parametros #{args.inspect}"
+
+        # Imprimir solo el código de la función
+        if original_method.source_location
+          file, line = original_method.source_location
+          if file && line
+            puts "Código de #{metodo}:"
+            File.open(file, 'r') do |f|
+              f.each_line.with_index do |linea, numero|
+                if (numero+1) >= line && !linea.strip.empty?
+                  break if linea.include?("end")
+                  puts "#{numero+1}: #{linea}"
+                end
+              end
+            end
+          end
         end
-      STRING
-      @_proxy_method = false
+
+        # Llamar al método original
+        original_method.bind(self).call(*args, &block)
+      end
     end
   end
-
-  def profesor_only
-    @_profesor = true
-  end
+end
 end
 
-# Example usage
+class AtrapadorDeCriaturas
+  include Anuncio
 
-class User
-
-  def hechizo               #lo podran hacer todos los magos
-    puts "ALOHOMORA"
+  def lanzar_red(criatura, ubicacion)
+    puts "¡Lanzando red para atrapar a #{criatura} en #{ubicacion}!"
   end
 
-  profesor_only             #a partir de aqui solo los que sepan la contrasela
-
-  def hechizo1
-    puts "CRUCCIO"
+  def usar_varita(hechizo, objetivo)
+    puts "¡Usando hechizo #{hechizo} para atrapar a #{objetivo}!"
   end
 
-  def hechizo2
-    puts "AVADA KEDAVRA "
-  end
+  anunciar_metodo :lanzar_red, :usar_varita
 end
 
-class EscobaVoladora
 
-  profesor_only
-  def volar()
-    puts "vuela vuela"
-  end
-end
+atrapador = AtrapadorDeCriaturas.new
 
-user = User.new(true)
+atrapador.lanzar_red("hipogrifo", "Bosque Prohibido")
+# => Lanzando red para atrapar a hipogrifo en Bosque Prohibido!
 
-user.hechizo1
-user.hechizo2
-
-escoba= EscobaVoladora.new
-
-escoba.volar
+atrapador.usar_varita("Expelliarmus", "niffler")
+# => Usando hechizo Expelliarmus para atrapar a niffler!

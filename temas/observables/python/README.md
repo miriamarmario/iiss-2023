@@ -63,9 +63,7 @@ numeros_magicos.subscribe(
 )
 ```
 
-En este ejemplo, utilizamos el mecanismo `range()` para crear un observable que emite
-
- una secuencia de números mágicos del 1 al 10. Nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. Cada número mágico se imprimirá en la consola y se mostrará un mensaje al finalizar la emisión.
+En este ejemplo, utilizamos el mecanismo `range()` para crear un observable que emite una secuencia de números mágicos del 1 al 10. Nos suscribimos al observable y proporcionamos funciones para manejar los eventos `on_next` y `on_completed`. Cada número mágico se imprimirá en la consola y se mostrará un mensaje al finalizar la emisión.
 
 ## Mecanismo 'filter' con números mágicos
 

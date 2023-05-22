@@ -1,16 +1,26 @@
 # Anotaciones en Ruby
 
-Las anotaciones en Ruby son una forma de agregar metadatos o información adicional a las clases y métodos. En el ejemplo, se utiliza una anotación personalizada llamada `profesor_only` para restringir el acceso a ciertos métodos únicamente a profesores.
+## Métodos de anotaciones en Ruby (simulación)
 
-La clase `Module` define un método llamado `method_added` que se ejecuta cada vez que se añade un nuevo método a una clase. Se realizan una serie de pasos. Para empezar, se verifica si la variable `@_profesor` es nula. Si es así, se imprime el mensaje "Introduzca la contraseña" para solicitar al usuario que ingrese una contraseña, que se almacena en `password`. Si la contraseña es correcta,  se establece la variable `@_profesor` como verdadera; de lo contrario, se establece como falsa.
+El código  muestra una simulación de anotaciones en Ruby utilizando módulos y métodos. Aunque Ruby no tiene un mecanismo incorporado para anotaciones como en otros lenguajes, es posible simular esta funcionalidad mediante el uso de técnicas específicas.
 
-Luego, se utiliza la anotación `profesor_only` para marcar los métodos que solo deben ser accesibles para los profesores. Esta anotación simplemente establece la variable `@_profesor` como verdadera.
+El módulo `Anuncio` define un método llamado `anunciar_metodo` en su módulo anidado `ClassMethods`. Este método se utiliza para agregar anotaciones a los métodos especificados.
 
-Dentro del método `method_added`, se agrega un alias para el método recién definido, precediendo su nombre con "admin". Luego, se crea una versión modificada del método que solo se ejecutará si `@_profesor` es verdadero.
+El código en sí mismo recibe una clase llamada `AtrapadorDeCriaturas` y la incluye el módulo `Anuncio`. Dentro de `AtrapadorDeCriaturas`, se definen dos métodos: `lanzar_red` y `usar_varita`. Estos métodos son posteriormente anunciados mediante la llamada al método `anunciar_metodo` en la clase `AtrapadorDeCriaturas`.
 
-El resultado es que los métodos definidos después de la anotación `profesor_only` solo podrán ser ejecutados si la contraseña ingresada es correcta y `@_profesor` es verdadera.
+Cuando se llama a cualquiera de los métodos anunciados, se ejecuta una secuencia de acciones definidas en el bloque del método `define_method`. Primero, se imprime un anuncio que muestra el método que va a ejecutarse y los parámetros proporcionados. Luego, se muestra el código fuente del método utilizando la ubicación del archivo fuente y la línea inicial del método. Finalmente, se llama al método original utilizando `original_method.bind(self).call(*args, &block)`.
 
-Para probarlo se muestra una clase `User` y una clase `EscobaVoladora`. Ambas clases usan la anotación `profesor_only`, lo que significa que los métodos definidos después de la anotación solo podrán ser ejecutados por profesores.
+A continuación, se muestra un ejemplo de uso del código:
 
-La instancia de `User` tiene acceso a los métodos `hechizo1` y `hechizo2`, mientras que la instancia de `EscobaVoladora` tiene acceso al método `volar`. Sin embargo, se requiere que la contraseña sea ingresada correctamente antes de ejecutar los métodos restringidos.
+```ruby
+atrapador = AtrapadorDeCriaturas.new
+
+atrapador.lanzar_red("hipogrifo", "Bosque Prohibido")
+# => Lanzando red para atrapar a hipogrifo en Bosque Prohibido!
+
+atrapador.usar_varita("Expelliarmus", "niffler")
+# => Usando hechizo Expelliarmus para atrapar a niffler!
+```
+
+En este trozo de código, se crea una instancia de `AtrapadorDeCriaturas` y se llaman a los métodos `lanzar_red` y `usar_varita`. Cada método, además de realizar su lógica principal, muestra anuncios y el código fuente correspondiente.
 
